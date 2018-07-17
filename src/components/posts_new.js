@@ -22,7 +22,6 @@ class PostsNew extends Component {
       </div>
     );
   }
-
   /*
   values object contains title, category, and content
   Inside of onSubmit we really want to be calling an action creator and that action creator will be
@@ -31,9 +30,19 @@ class PostsNew extends Component {
   After that we'll then figure out exactly how to hook it up to this on submit function.
   */
   onSubmit(values) {
-    //this === component
-    //wire up onSubmit to action creator createPost
-      this.props.createPost(values);
+    /*Take me to home route '/', inside params just has to match one of our <route
+    paths. And only do this after a post has been created so we can see it as
+    one of the posts in the list. To do this, we will pass in callback function
+    this.props.history.push('/');
+    second parameter to this.props.createPost action creator
+    Then go to action creator to receive the callback.
+
+    If the action creator calls this function it will automatically
+    navigate us back to our list of posts.
+    */
+      this.props.createPost(values, () => {
+        this.props.history.push('/');
+      });
   }
 
   render() {
@@ -87,6 +96,7 @@ function validate(values) {
   return errors;
 }
 
+//connect createPost action creator to the PostsNew component
 export default reduxForm({
   validate, //validate: validate,
   form:'PostsNewForm'
